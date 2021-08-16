@@ -1,1 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+*{
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 20px;
+}
+body {
+  margin: 0;
+  /* font-family: Roboto, "Helvetica Neue", sans-serif; */
+
+  /* background-image: linear-gradient(180deg,#2f6ed3 5%,#5095e4 20%,#5095e4 60%,#2f6ed3 95%);  */
+  /* background-image: linear-gradient(180deg, #ffe9da 0, #e0d6d0 25%, #bbc2c7 50%, #98adbf 75%, #779ab7 100%); */
+
+  /* background: -webkit-linear-gradient(
+    35deg,
+    rgb(83, 97, 98),
+    rgb(255, 255, 255)
+  );
+  background: linear-gradient(37deg, rgb(83, 97, 98), rgb(255, 255, 255)); */
+}
