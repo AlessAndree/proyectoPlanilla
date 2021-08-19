@@ -24,4 +24,8 @@ export class NavbarComponent {
     console.log('ESTE ES EL USUARIO', this.user);
   }
 
+  logOut() {
+    this.auth.logout();
+  }
+
 }

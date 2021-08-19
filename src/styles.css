@@ -6,7 +6,7 @@ body {
 }
 *{
   font-family: 'Ubuntu', sans-serif;
-  font-size: 20px;
+  font-size: 17px;
 }
 body {
   margin: 0;
@@ -21,4 +21,8 @@ body {
     rgb(255, 255, 255)
   );
   background: linear-gradient(37deg, rgb(83, 97, 98), rgb(255, 255, 255)); */
+}
+
+.full {
+  width: 100%;
 }

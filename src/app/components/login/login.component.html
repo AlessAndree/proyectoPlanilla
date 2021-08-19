@@ -1,11 +1,5 @@
 <br /><br /><br /><br /><br />
 <div class="col-md-5 col-sm-10 text-center cristal">
-  <!-- background: #e0e0e0;  -->
-  <!-- <p>
-    <mat-toolbar color="primary" style="border-radius: 50px 50px 0px 0px">
-      <span style="margin: auto">INICIAR SESIÓN</span>
-    </mat-toolbar>
-  </p> -->
   <img
     src="../../../assets/style/Sin título-2.png"
     style="margin-top: -70px"
@@ -13,12 +7,40 @@
   />
   <br />
   <h1 class="titulo">Planilla GT</h1>
-  <mat-divider></mat-divider>
+  <hr class="hr3">
+  <form [formGroup]="formLogin" (ngSubmit)="clickEmailPass()">
+    <mat-form-field class="full" appearance="outline">
+      <mat-label>Correo Electrónico</mat-label>
+      <input formControlName="email" type="email" matInput />
+      <mat-icon matSuffix>alternate_email</mat-icon>
+      <mat-hint class="text-danger" *ngIf="formLogin.get('email')?.touched && formLogin.get('email')?.errors?.required">
+        <p>El correo electrónico es requerido.</p>
+      </mat-hint>
+      <mat-hint class="text-danger" *ngIf="formLogin.get('email')?.touched && formLogin.get('email')?.errors?.pattern">
+        <p>El correo electrónico no es válido.</p>
+      </mat-hint>
+    </mat-form-field>
 
-  <br />
-  <br /><br />
-  <button style="width: 100%" mat-flat-button color="primary" (click)="clickGoogle()">
-    Iniciar Sesión
-  </button>
-  <button (click)="logOut()" mat-flat-button color="warning">Salir</button>
+    <mat-form-field class="full" appearance="outline">
+      <mat-label>Contraseña</mat-label>
+      <input formControlName="pass" matInput [type]="hide ? 'password' : 'text'" />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hide = !hide"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide"
+      >
+        <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+      </button>
+      <mat-hint class="text-danger" *ngIf="formLogin.get('pass')?.touched && formLogin.get('pass')?.errors?.required">
+        <p>La contraseña es requerida.</p>
+      </mat-hint>
+
+    </mat-form-field>
+    <button style="margin-top: 10px; margin-bottom: 15px;" type="submit" [disabled]="!formLogin.valid" mat-flat-button color="primary" class="full">Iniciar Sesión</button>
+  </form>
+  <!--    <button (click)="logOut()" mat-flat-button color="warning">Salir</button> -->
+  <hr class="hr5">
+  <button  matTooltip="Iniciar Sesión con Google" (click)="clickGoogle()" type="button" mat-stroked-button  class="full"><i class="fab fa-google"></i></button>
 </div>

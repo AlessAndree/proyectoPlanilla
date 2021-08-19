@@ -14,9 +14,9 @@ export class AuthService {
   }
 
   stateUser() {
-    this._auth.onAuthStateChanged((user:any)=> {
+    this._auth.onAuthStateChanged((user: any) => {
       // console.log(user)
-      if(user) {
+      if (user) {
         console.log('LOGEADO');
         this.user = user;
         return true;
@@ -30,15 +30,18 @@ export class AuthService {
 
 
   loginWithGoogle() {
-    // this._auth.signInWithPopup(firebase.auth.GoogleAuthProvider)
     return firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider);
-    // .then((data: any) => {
-    //   console.log('SI SE LOGEA', data);
-    // });
+  }
+
+  loginWithEmailPass(email: string, password: string) {
+    return firebase.auth().signInWithEmailAndPassword(email, password);
   }
 
   logout() {
-    firebase.auth().signOut().then((data: any) => {console.log(data);});
+    firebase.auth().signOut().then((data: any) => {
+      console.log(data);
+      this.router.navigate(['login']);
+    });
   }
 
 }

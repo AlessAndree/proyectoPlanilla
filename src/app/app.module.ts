@@ -12,10 +12,12 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from 'src/environments/environment';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './providers/auth.service';
 import { AuthGuardService } from './providers/auth-guard.service';
 import { PruebaComponent } from './components/prueba/prueba.component';
+
+import {NgParticlesModule} from "ng-particles";
 
 
 @NgModule({
@@ -27,6 +29,7 @@ import { PruebaComponent } from './components/prueba/prueba.component';
   ],
   imports: [
     BrowserModule,
+    NgParticlesModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
@@ -34,7 +37,8 @@ import { PruebaComponent } from './components/prueba/prueba.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [AuthService, AuthGuardService],
   bootstrap: [AppComponent]
