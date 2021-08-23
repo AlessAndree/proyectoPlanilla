@@ -4,8 +4,8 @@
 
 .sidenav {
   width: 250px;
-  box-shadow: rgba(0,0,0, 0.7) -15px 0px 30px;
-  background-color: #536162;
+  background-color: #0069a3;
+  padding: 2.5px 15px;
 }
 
 .white {
@@ -27,11 +27,55 @@
   top: 10px;
   right: 0;
   width: 64px;
-  background: rgba(0,0,0,.3);
+  background: rgba(0, 0, 0, 0.3);
   z-index: 1031;
   border-radius: 8px 0 0 8px;
   text-align: center;
   color: white;
   padding-top: 5px;
   padding-bottom: 5px;
+}
+
+.active {
+  color: #0069a3 !important;
+  background-color: white;
+
+}
+.active:hover {
+  background-color: rgb(240, 240, 240) !important;
+}
+.active:focus {
+  background-color: white !important;
+}
+
+
+.titlenav {
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.photo {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 2px white solid;
+}
+
+.item {
+  margin: 10px 0;
+  color: white;
+  font-weight: bolder;
+  border-radius: 5px;
+}
+
+.hr3 {
+  border: 0;
+  height: 2px;
+  background-image: linear-gradient(to right, white, rgb(116, 116, 116), white);
+  margin: 5px 0;
 }

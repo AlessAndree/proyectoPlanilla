@@ -1,46 +1,200 @@
-<br /><br /><br /><br /><br />
-<div class="col-md-5 col-sm-10 text-center cristal">
+<br /><br /><br /><br />
+<div
+  class="col-md-6 col-lg-4 col-sm-8 col-10 text-center cristal mat-elevation-z5"
+>
   <img
-    src="../../../assets/style/Sin título-2.png"
+    src="../../../assets/style/3.png"
     style="margin-top: -70px"
     width="25%"
   />
   <br />
   <h1 class="titulo">Planilla GT</h1>
-  <hr class="hr3">
-  <form [formGroup]="formLogin" (ngSubmit)="clickEmailPass()">
-    <mat-form-field class="full" appearance="outline">
-      <mat-label>Correo Electrónico</mat-label>
-      <input formControlName="email" type="email" matInput />
-      <mat-icon matSuffix>alternate_email</mat-icon>
-      <mat-hint class="text-danger" *ngIf="formLogin.get('email')?.touched && formLogin.get('email')?.errors?.required">
-        <p>El correo electrónico es requerido.</p>
-      </mat-hint>
-      <mat-hint class="text-danger" *ngIf="formLogin.get('email')?.touched && formLogin.get('email')?.errors?.pattern">
-        <p>El correo electrónico no es válido.</p>
-      </mat-hint>
-    </mat-form-field>
+  <!-- <hr class="hr3" /> -->
+  <mat-tab-group mat-align-tabs="start">
+    <mat-tab label="Ingresar">
+      <br />
+      <form [formGroup]="formLogin" (ngSubmit)="clickEmailPass()">
+        <mat-form-field class="full" appearance="outline">
+          <mat-label>Correo Electrónico</mat-label>
+          <input formControlName="email" type="email" matInput />
+          <mat-icon matSuffix>alternate_email</mat-icon>
+          <mat-hint
+            class="text-danger"
+            *ngIf="
+              formLogin.get('email')?.touched &&
+              formLogin.get('email')?.errors?.required
+            "
+          >
+            <p>El correo electrónico es requerido.</p>
+          </mat-hint>
+          <mat-hint
+            class="text-danger"
+            *ngIf="
+              formLogin.get('email')?.touched &&
+              formLogin.get('email')?.errors?.pattern
+            "
+          >
+            <p>El correo electrónico no es válido.</p>
+          </mat-hint>
+        </mat-form-field>
 
-    <mat-form-field class="full" appearance="outline">
-      <mat-label>Contraseña</mat-label>
-      <input formControlName="pass" matInput [type]="hide ? 'password' : 'text'" />
+        <mat-form-field class="full" appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <input
+            formControlName="pass"
+            matInput
+            [type]="hide ? 'password' : 'text'"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+          <mat-hint
+            class="text-danger"
+            *ngIf="
+              formLogin.get('pass')?.touched &&
+              formLogin.get('pass')?.errors?.required
+            "
+          >
+            <p>La contraseña es requerida.</p>
+          </mat-hint>
+        </mat-form-field>
+        <button
+          style="margin-top: 10px; margin-bottom: 15px"
+          type="submit"
+          [disabled]="!formLogin.valid"
+          mat-flat-button
+          color="primary"
+          class="full"
+        >
+          Iniciar Sesión
+        </button>
+      </form>
+      <!--    <button (click)="logOut()" mat-flat-button color="warning">Salir</button> -->
+      <hr class="hr5" />
       <button
-        mat-icon-button
-        matSuffix
-        (click)="hide = !hide"
-        [attr.aria-label]="'Hide password'"
-        [attr.aria-pressed]="hide"
+        matTooltip="Iniciar Sesión con Google"
+        (click)="clickGoogle()"
+        type="button"
+        mat-stroked-button color="primary"
+        class="full"
       >
-        <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        <i class="fab fa-google"></i>
       </button>
-      <mat-hint class="text-danger" *ngIf="formLogin.get('pass')?.touched && formLogin.get('pass')?.errors?.required">
-        <p>La contraseña es requerida.</p>
-      </mat-hint>
+    </mat-tab>
 
-    </mat-form-field>
-    <button style="margin-top: 10px; margin-bottom: 15px;" type="submit" [disabled]="!formLogin.valid" mat-flat-button color="primary" class="full">Iniciar Sesión</button>
-  </form>
-  <!--    <button (click)="logOut()" mat-flat-button color="warning">Salir</button> -->
-  <hr class="hr5">
-  <button  matTooltip="Iniciar Sesión con Google" (click)="clickGoogle()" type="button" mat-stroked-button  class="full"><i class="fab fa-google"></i></button>
+    <mat-tab label="Registro">
+      <br />
+      <form [formGroup]="formRegister" (ngSubmit)="clickRegister()">
+        <mat-form-field class="full" appearance="outline">
+          <mat-label>Correo Electrónico</mat-label>
+          <input formControlName="emailRegister" type="email" matInput />
+          <mat-icon matSuffix>alternate_email</mat-icon>
+          <mat-hint
+            class="text-danger"
+            *ngIf="
+              formRegister.get('emailRegister')?.touched &&
+              formRegister.get('emailRegister')?.errors?.required
+            "
+          >
+            <p>El correo electrónico es requerido.</p>
+          </mat-hint>
+          <mat-hint
+            class="text-danger"
+            *ngIf="
+              formRegister.get('emailRegister')?.touched &&
+              formRegister.get('emailRegister')?.errors?.pattern
+            "
+          >
+            <p>El correo electrónico no es válido.</p>
+          </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="full" appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <input
+            formControlName="passRegister1"
+            matInput
+            [type]="hide ? 'password' : 'text'"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+          <mat-hint
+            class="text-danger"
+            *ngIf="
+              formRegister.get('passRegister1')?.touched &&
+              formRegister.get('passRegister1')?.errors?.required
+            "
+          >
+            <p>La contraseña es requerida.</p>
+          </mat-hint>
+        </mat-form-field>
+        <mat-form-field class="full" appearance="outline">
+          <mat-label>Repita la Contraseña</mat-label>
+          <input
+            formControlName="passRegister2"
+            matInput
+            [type]="hide ? 'password' : 'text'"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+          <mat-hint
+            class="text-danger"
+            *ngIf="
+              formRegister.get('passRegister2')?.touched &&
+              formRegister.get('passRegister2')?.errors?.required
+            "
+          >
+            <p>Se requiere repetir la contraseña.</p>
+          </mat-hint>
+          <mat-hint
+            class="text-danger"
+            *ngIf="
+              formRegister.get('passRegister2')?.touched &&
+              ((formRegister.get('passRegister2')?.value && formRegister.get('passRegister2')?.value != '' ) && formRegister.get('passRegister2')?.value != formRegister.get('passRegister1')?.value)
+            "
+          >
+            <p>Las contraseñas no coinciden.</p>
+          </mat-hint>
+
+        </mat-form-field>
+        <button
+          style="margin-top: 10px; margin-bottom: 15px"
+          type="submit"
+          [disabled]="(!formRegister.valid ||  (formRegister.get('passRegister2')?.value != formRegister.get('passRegister1')?.value))"
+          mat-flat-button
+          color="primary"
+          class="full"
+        >
+          Registrarse
+        </button>
+      </form>
+      <hr class="hr5" />
+      <button
+        matTooltip="Registrarse con Google"
+        (click)="clickGoogle()"
+        type="button"
+        mat-stroked-button
+        class="full"
+      >
+        <i class="fab fa-google"></i>
+      </button>
+    </mat-tab>
+  </mat-tab-group>
 </div>

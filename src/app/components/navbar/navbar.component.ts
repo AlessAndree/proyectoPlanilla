@@ -11,6 +11,8 @@ import { AuthService } from 'src/app/providers/auth.service';
 })
 export class NavbarComponent {
 
+  urlPhoto: string = '../../../assets/style/3.png';
+
   user: any;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -20,12 +22,18 @@ export class NavbarComponent {
     );
 
   constructor(private breakpointObserver: BreakpointObserver, private auth:AuthService) {
-    this.user = this.auth.user;
+    // this.user = this.auth.user;
+    this.getUser();
     console.log('ESTE ES EL USUARIO', this.user);
   }
 
   logOut() {
     this.auth.logout();
+  }
+
+  async getUser() {
+    this.user = await this.auth.getUser();
+    console.log('ESTE ES EL CURRENT', this.user);
   }
 
 }

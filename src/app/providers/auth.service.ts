@@ -14,6 +14,8 @@ export class AuthService {
   }
 
   stateUser() {
+    console.log('se ejecuta');
+
     this._auth.onAuthStateChanged((user: any) => {
       // console.log(user)
       if (user) {
@@ -26,6 +28,11 @@ export class AuthService {
         return false;
       }
     });
+  }
+
+  getUser() {
+    return firebase.auth().currentUser;
+
   }
 
 
@@ -42,6 +49,10 @@ export class AuthService {
       console.log(data);
       this.router.navigate(['login']);
     });
+  }
+
+  register(email: string, pass: string) {
+    return firebase.auth().createUserWithEmailAndPassword(email, pass);
   }
 
 }
