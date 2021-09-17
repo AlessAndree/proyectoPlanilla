@@ -8,16 +8,21 @@ import { MaterialModule } from './material.module';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { MatIconModule } from '@angular/material/icon';
 import { LoginComponent } from './components/login/login.component';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireDatabaseModule } from '@angular/fire/database';
+
 import { environment } from 'src/environments/environment';
+
+import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFirestore } from '@angular/fire/firestore';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './providers/auth.service';
 import { AuthGuardService } from './providers/auth-guard.service';
 import { PruebaComponent } from './components/prueba/prueba.component';
 
 import {NgParticlesModule} from "ng-particles";
+import { PuestosComponent, DialogPuestosComponent } from './components/puestos/puestos.component';
+import { MessageDialogComponent } from './components/message-dialog/message-dialog.component';
 
 
 @NgModule({
@@ -25,7 +30,15 @@ import {NgParticlesModule} from "ng-particles";
     AppComponent,
     NavbarComponent,
     LoginComponent,
-    PruebaComponent
+    PruebaComponent,
+    PuestosComponent,
+    DialogPuestosComponent,
+    MessageDialogComponent
+  ],
+  entryComponents: [
+    PuestosComponent,
+    DialogPuestosComponent,
+    MessageDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -35,12 +48,11 @@ import {NgParticlesModule} from "ng-particles";
     MaterialModule,
     MatIconModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireDatabaseModule,
     AngularFireAuthModule,
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService, AuthGuardService],
+  providers: [AuthService, AuthGuardService, AngularFirestore],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

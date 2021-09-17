@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>{{data.message.titulo}}</h1>
+<div mat-dialog-content>
+  <div style="margin: 0; text-align: center;" [class]="data.message.class" role="alert">
+    {{data.message.message}}
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button style="margin-left: auto;" mat-button mat-dialog-close>Aceptar</button>
+</div>

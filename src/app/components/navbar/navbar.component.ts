@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/providers/auth.service';
 })
 export class NavbarComponent {
 
-  urlPhoto: string = '../../../assets/style/3.png';
+  urlPhoto: string = '../../../assets/style/4.png';
 
   user: any;
 
@@ -21,7 +21,7 @@ export class NavbarComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, private auth:AuthService) {
+  constructor(private breakpointObserver: BreakpointObserver, private auth: AuthService) {
     // this.user = this.auth.user;
     this.getUser();
     console.log('ESTE ES EL USUARIO', this.user);
@@ -33,7 +33,7 @@ export class NavbarComponent {
 
   async getUser() {
     this.user = await this.auth.getUser();
-    console.log('ESTE ES EL CURRENT', this.user);
+    await this.auth.ejecutarObservableUid(this.user.uid);
   }
 
 }

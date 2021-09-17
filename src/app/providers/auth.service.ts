@@ -2,29 +2,56 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import firebase from 'firebase/app';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { MessageDialogComponent } from '../components/message-dialog/message-dialog.component';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  user: any = null;
+  private subjectUid = new Subject<void>();
+  public observableUid$ = this.subjectUid.asObservable();
 
-  constructor(private _auth: AngularFireAuth, public router: Router) {
+  private subjectMessage = new Subject<void>();
+  public observableMessage$ = this.subjectMessage.asObservable();
+
+  ejecutarObservableUid(uid: string) {
+    console.log('OBTIENE UID', uid)
+    this.uid = uid;
+    this.subjectUid.next();
+  }
+
+  ejecutarObservableMessage(ms: any) {
+    this.subjectMessage.next(ms);
+  }
+
+  user: any = null;
+  uid: string | undefined;
+
+  constructor(private _auth: AngularFireAuth, public router: Router, public dialog: MatDialog) {
     this.stateUser();
+  }
+
+  openDialog(message: any) {
+    console.log('ABRE DIALOGO DE MENSAJE');
+
+    const dialogRef = this.dialog.open(MessageDialogComponent, {
+      width: '500px',
+      data: {message}
+    });
   }
 
   stateUser() {
     console.log('se ejecuta');
 
     this._auth.onAuthStateChanged((user: any) => {
-      // console.log(user)
       if (user) {
-        console.log('LOGEADO');
         this.user = user;
+        this.uid = user.uid;
         return true;
       } else {
         this.user = null;
-        console.log('NO LOEADO');
         return false;
       }
     });
@@ -32,9 +59,7 @@ export class AuthService {
 
   getUser() {
     return firebase.auth().currentUser;
-
   }
-
 
   loginWithGoogle() {
     return firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider);

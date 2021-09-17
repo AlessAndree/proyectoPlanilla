@@ -5,6 +5,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { PruebaComponent } from './components/prueba/prueba.component';
 
 import { AngularFireAuthGuard, redirectLoggedInTo, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
+import { PuestosComponent } from './components/puestos/puestos.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 const redirectLoggedInToHome = () => redirectLoggedInTo(['inicio']);
@@ -12,6 +13,9 @@ const redirectLoggedInToHome = () => redirectLoggedInTo(['inicio']);
 const routes: Routes = [
   {path: '', component: NavbarComponent, children: [
     {path: 'inicio', component:PruebaComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }},
+    {path: 'puestos', component:PuestosComponent,
     canActivate: [AngularFireAuthGuard],
     data: { authGuardPipe: redirectUnauthorizedToLogin }},
     {path: '', pathMatch: 'full', redirectTo: 'inicio'}

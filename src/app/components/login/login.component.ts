@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/providers/auth.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+import {MatSnackBar, MAT_SNACK_BAR_DATA} from '@angular/material/snack-bar';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -9,13 +12,15 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
+  durationInSeconds = 5;
+
   hide = true;
   hide2 = true;
 
   formLogin: FormGroup;
   formRegister: FormGroup;
 
-  constructor(private _authService: AuthService, private router: Router) {
+  constructor(private _authService: AuthService, private router: Router, private _snackBar: MatSnackBar) {
     this.formLogin = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
       pass: new FormControl('', Validators.required  )
@@ -24,6 +29,12 @@ export class LoginComponent implements OnInit {
       emailRegister: new FormControl('', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
       passRegister1: new FormControl('', Validators.required  ),
       passRegister2: new FormControl('', Validators.required  )
+    });
+  }
+
+  openSnackBar(mensaje: string) {
+    this._snackBar.openFromComponent(loginMessageComponent, {
+      duration: this.durationInSeconds * 1000, data: mensaje
     });
   }
 
@@ -38,7 +49,14 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['inicio']);
       }
 
-    } catch (err) {console.error(err);}
+    } catch (err: any) {
+      console.error('ESTE ES EL ERROR', err);
+      if(err.code == 'auth/email-already-in-use') {
+        this.openSnackBar('Error, el correo ingresado ya esta registrado.');
+      } else if ( err.code == 'auth/weak-password') {
+        this.openSnackBar('Error, la contraseña debe tener al menos 6 caracteres.');
+      }
+    }
 
   }
 
@@ -65,4 +83,21 @@ export class LoginComponent implements OnInit {
     this._authService.logout();
   }
 
+}
+
+
+@Component({
+  selector: 'login-snack-bar-component',
+  templateUrl: 'login-snack-bar-component.html',
+  styles: [`
+    .example-pizza-party {
+      color: white;
+      text-transform: none;
+    }
+  `],
+})
+export class loginMessageComponent {
+  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: string) {
+    console.log('ESTO ES LO QUE TRAE', data)
+  }
 }

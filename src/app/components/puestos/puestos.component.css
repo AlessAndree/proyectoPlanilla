@@ -1,0 +1,27 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.item {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.add {
+  background: #1e364d;
+  color: white;
+  border-radius: 5px;
+}
+.full {
+  width: 100%;
+}
+
+.example-right-align {
+  text-align: right;
+}
+
+.head {
+  background: #1e364d;
+  color: white;
+}

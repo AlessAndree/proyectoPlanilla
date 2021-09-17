@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>Agregar Puesto</h1>
+<hr>
+<form [formGroup]="formPuesto" (ngSubmit)="accept()">
+<div mat-dialog-content>
+
+    <mat-form-field class="full" appearance="outline">
+      <mat-label>Nombre</mat-label>
+      <input formControlName="nombrePuesto" name="nombrePuesto" type="text" matInput>
+    </mat-form-field>
+    <mat-form-field class="full" appearance="outline">
+      <mat-label>Salario Mensual</mat-label>
+      <input (change)="calcularSalarios('mensual')" formControlName="salarioMensual" name="salarioMensual" class="example-right-align" type="number" matInput>
+    </mat-form-field>
+    <mat-form-field class="full" appearance="outline">
+      <mat-label>Salario Quincenal</mat-label>
+      <input (change)="calcularSalarios('quincenal')" formControlName="salarioQuincenal" name="salarioQuincenal" class="example-right-align" type="number" matInput>
+    </mat-form-field>
+    <mat-form-field class="full" appearance="outline">
+      <mat-label>Salario Diario</mat-label>
+      <input (change)="calcularSalarios('diario')" formControlName="salarioDiario" name="salarioDiario" class="example-right-align" type="number" matInput>
+    </mat-form-field>
+  </div>
+  <div style="margin-top: -15px;" mat-dialog-actions>
+    <button style="width: 50%;" mat-raised-button (click)="onNoClick()">Cancelar</button>
+    <button style="width: calc(50% - 8px);" mat-raised-button [disabled]="!formPuesto.valid" color="primary">Aceptar</button>
+  </div>
+</form>

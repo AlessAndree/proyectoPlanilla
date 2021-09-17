@@ -3,7 +3,7 @@
   class="col-md-6 col-lg-4 col-sm-8 col-10 text-center cristal mat-elevation-z5"
 >
   <img
-    src="../../../assets/style/3.png"
+    src="../../../assets/style/4.png"
     style="margin-top: -70px"
     width="25%"
   />
@@ -11,7 +11,7 @@
   <h1 class="titulo">Planilla GT</h1>
   <!-- <hr class="hr3" /> -->
   <mat-tab-group mat-align-tabs="start">
-    <mat-tab label="Ingresar">
+    <mat-tab label="Ingreso">
       <br />
       <form [formGroup]="formLogin" (ngSubmit)="clickEmailPass()">
         <mat-form-field class="full" appearance="outline">
@@ -50,6 +50,7 @@
             matSuffix
             (click)="hide = !hide"
             [attr.aria-pressed]="hide"
+            type="button"
           >
             <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
           </button>
@@ -126,6 +127,7 @@
             matSuffix
             (click)="hide = !hide"
             [attr.aria-pressed]="hide"
+            type="button"
           >
             <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
           </button>
@@ -151,6 +153,7 @@
             matSuffix
             (click)="hide = !hide"
             [attr.aria-pressed]="hide"
+            type="button"
           >
             <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
           </button>
@@ -192,6 +195,7 @@
         type="button"
         mat-stroked-button
         class="full"
+        color="primary"
       >
         <i class="fab fa-google"></i>
       </button>
