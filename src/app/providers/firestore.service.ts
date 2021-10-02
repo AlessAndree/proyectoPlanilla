@@ -2,42 +2,50 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AuthService } from './auth.service';
+import { ObsService } from './obs.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirestoreService {
 
-  puestos: Observable<any[]>;
-  puestosCollection: AngularFirestoreCollection<any>;
+  puestos!: Observable<any[]>;
+  puestosCollection!: AngularFirestoreCollection<any>;
   subUid: Subscription;
 
-  constructor(private readonly afs: AngularFirestore, private auth: AuthService) {
-    this.subUid = this.auth.observableUid$.subscribe(() => {
-      this.inicia();
-      console.log('ENTRA AL OBSERVAVLE');
+  constructor(private readonly afs: AngularFirestore, private obsService: ObsService) {
+    console.log('ENTRA AL CONSTRUCTOR DEL SERVICIO PUESTOS');
+    this.subUid = this.obsService.observableUid$.subscribe(() => {
+      this.getPuestos();
     });
-    this.puestosCollection = this.afs.collection<any>('usuarios/' + this.auth.uid + '/puestos');
-    this.puestos = this.puestosCollection.snapshotChanges().pipe(
-      map(actions => actions.map(a => a.payload.doc.data() as any))
-    );
-    this.getPuestos();
+    if(this.obsService.uid) {
+      this.getPuestos();
+    }
   }
 
-  inicia() {
-    this.puestosCollection = this.afs.collection<any>('usuarios/' + this.auth.uid + '/puestos');
-    this.puestos = this.puestosCollection.snapshotChanges().pipe(
-      map(actions => actions.map(a => a.payload.doc.data() as any))
-    );
-  }
 
   deletePuesto(id: string) {
+    console.log('entra al servicio a eliminar', id);
+
     return new Promise(async (resolve, reject) => {
       try {
         const result = await this.puestosCollection.doc(id).delete();
+        const message = {
+          type: 'alert',
+          class: 'alert alert-success',
+          message: 'El puesto se borró correctamente.',
+          titulo: 'Eliminación Exitosa'
+        }
+        this.obsService.openDialogMessage(message);
         resolve(result);
       } catch (err: any) {
+        const message = {
+          type: 'alert',
+          class: 'alert alert-danger',
+          message: 'El puesto falló al eliminarse.',
+          titulo: 'Error'
+        }
+        this.obsService.openDialogMessage(message);
         reject(err.message);
       }
     })
@@ -50,20 +58,26 @@ export class FirestoreService {
         const data = { id, ...puesto };
         let result = await this.puestosCollection.doc(id).set(data);
         const message = {
+          type: 'alert',
           class: 'alert alert-success',
           message: 'El puesto se guardó correctamente.',
           titulo: 'Registro Exitoso'
         }
-        this.auth.ejecutarObservableMessage(message);
-        console.log('GUARDA');
+        if(idPuesto) {
+          message.message = 'El puesto se editó correctamente';
+          message.titulo = 'Edición Exitosa';
+        }
+        // console.log('GUARDA');
+        this.obsService.openDialogMessage(message);
         resolve(result);
       } catch (err: any) {
         const message = {
+          type: 'alert',
           class: 'alert alert-danger',
           message: 'El puesto falló al guardarse.',
-          titulo: 'Registro Fallido'
+          titulo: 'Error'
         }
-        this.auth.ejecutarObservableMessage(message);
+        this.obsService.openDialogMessage(message);
         reject(err.message);
       }
     })
@@ -71,8 +85,13 @@ export class FirestoreService {
   }
 
   getPuestos() {
-    this.puestos = this.puestosCollection.snapshotChanges().pipe(
-      map(actions => actions.map(a => a.payload.doc.data() as any))
+    this.puestosCollection = this.afs.collection<any>('usuarios/' + this.obsService.uid + '/puestos');
+    return this.puestos = this.puestosCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as any;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
     );
   }
 

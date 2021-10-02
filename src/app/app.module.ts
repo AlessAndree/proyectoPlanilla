@@ -23,6 +23,7 @@ import { PruebaComponent } from './components/prueba/prueba.component';
 import {NgParticlesModule} from "ng-particles";
 import { PuestosComponent, DialogPuestosComponent } from './components/puestos/puestos.component';
 import { MessageDialogComponent } from './components/message-dialog/message-dialog.component';
+import { ObsService } from './providers/obs.service';
 
 
 @NgModule({
@@ -52,7 +53,7 @@ import { MessageDialogComponent } from './components/message-dialog/message-dial
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService, AuthGuardService, AngularFirestore],
+  providers: [AuthService, AuthGuardService, AngularFirestore, ObsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

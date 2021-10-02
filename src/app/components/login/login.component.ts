@@ -65,6 +65,7 @@ export class LoginComponent implements OnInit {
     try {
       const user = await this._authService.loginWithGoogle();
       if (user) {
+        console.log('usuario', user);
         this.router.navigate(['inicio']);
       }
     } catch (err) {console.error(err);}

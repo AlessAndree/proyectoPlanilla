@@ -13,6 +13,18 @@
   color: white;
   border-radius: 5px;
 }
+
+.btnopt{
+  margin: 0 5px;
+  border-radius: 5px;
+  color: #1e364d;
+}
+
+.btnopt:hover {
+  color: white;
+}
+
+
 .full {
   width: 100%;
 }

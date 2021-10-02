@@ -21,7 +21,7 @@
     </mat-form-field>
   </div>
   <div style="margin-top: -15px;" mat-dialog-actions>
-    <button style="width: 50%;" mat-raised-button (click)="onNoClick()">Cancelar</button>
-    <button style="width: calc(50% - 8px);" mat-raised-button [disabled]="!formPuesto.valid" color="primary">Aceptar</button>
+    <button type="button" style="width: 50%;" mat-raised-button (click)="onNoClick()">Cancelar</button>
+    <button type="button" style="width: calc(50% - 8px);" mat-raised-button [disabled]="!formPuesto.valid" color="primary" (click)="accept()">Aceptar</button>
   </div>
 </form>

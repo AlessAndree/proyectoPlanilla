@@ -3,6 +3,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { AuthService } from 'src/app/providers/auth.service';
+import { ObsService } from 'src/app/providers/obs.service';
 
 @Component({
   selector: 'app-navbar',
@@ -21,19 +22,20 @@ export class NavbarComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, private auth: AuthService) {
-    // this.user = this.auth.user;
+  constructor(private breakpointObserver: BreakpointObserver, private auth: AuthService, private obsService: ObsService) {
     this.getUser();
-    console.log('ESTE ES EL USUARIO', this.user);
   }
 
   logOut() {
+    this.obsService.ejecutarObservableUid(null);
     this.auth.logout();
   }
 
   async getUser() {
     this.user = await this.auth.getUser();
-    await this.auth.ejecutarObservableUid(this.user.uid);
+    if (this.user) {
+      await this.obsService.ejecutarObservableUid(this.user.uid);
+    }
   }
 
 }

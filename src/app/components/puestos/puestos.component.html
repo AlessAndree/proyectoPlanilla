@@ -17,22 +17,29 @@
 
     <ng-container matColumnDef="mensual">
       <th class="head" mat-header-cell *matHeaderCellDef> Salario Mensual </th>
-      <td mat-cell *matCellDef="let element"> {{element.salarioMensual}} </td>
+      <td mat-cell *matCellDef="let element"> Q {{element.salarioMensual}} </td>
     </ng-container>
 
     <ng-container matColumnDef="quincenal">
       <th class="head" mat-header-cell *matHeaderCellDef> Salario Quincenal </th>
-      <td mat-cell *matCellDef="let element"> {{element.salarioQuincenal}} </td>
+      <td mat-cell *matCellDef="let element"> Q {{element.salarioQuincenal}} </td>
     </ng-container>
 
     <ng-container matColumnDef="diario">
       <th class="head" mat-header-cell *matHeaderCellDef> Salario Diario </th>
-      <td mat-cell *matCellDef="let element"> {{element.salarioDiario}} </td>
+      <td mat-cell *matCellDef="let element"> Q {{element.salarioDiario}} </td>
     </ng-container>
 
     <ng-container matColumnDef="opciones">
-      <th class="head" mat-header-cell *matHeaderCellDef> Opciones </th>
-      <td mat-cell *matCellDef="let element">  </td>
+      <th class="head text-center" mat-header-cell *matHeaderCellDef> Opciones </th>
+      <td class="text-center" mat-cell *matCellDef="let element">
+        <button class="btnopt btn-outline-secondary" (click)="openDialog(element)" matTooltip="Editar" matTooltipPosition="left" mat-icon-button>
+          <mat-icon style="margin-top: -5px;">edit</mat-icon>
+        </button>
+        <button class="btnopt btn-outline-danger" matTooltip="Eliminar" (click)="deleteP(element.id)" matTooltipPosition="right" mat-icon-button>
+          <mat-icon style="margin-top: -5px;">delete</mat-icon>
+        </button>
+      </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

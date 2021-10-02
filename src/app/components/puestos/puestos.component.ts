@@ -1,39 +1,44 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/providers/auth.service';
 import { FirestoreService } from 'src/app/providers/firestore.service';
+import { ObsService } from 'src/app/providers/obs.service';
 
 @Component({
   selector: 'app-puestos',
   templateUrl: './puestos.component.html',
   styleUrls: ['./puestos.component.css']
 })
-export class PuestosComponent implements OnInit {
+export class PuestosComponent implements OnInit, OnDestroy {
 
-  subMessage: Subscription;
   subUid: Subscription;
+  subMessage: Subscription;
 
   displayedColumns: string[] = ['nombre', 'mensual', 'quincenal', 'diario', 'opciones'];
   dataSource = new MatTableDataSource<any>([]);
-  // @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  puestos$ = this.puestosService.puestos;
+  puestos$: Observable<any[]> | any;
 
-  constructor(public dialog: MatDialog, private puestosService: FirestoreService, private auth: AuthService) {
-    // this.dataSource.paginator = paginator;
-    this.subMessage = this.auth.observableMessage$.subscribe((data) => {
-      this.auth.openDialog(data);
+  constructor(public dialog: MatDialog, private puestosService: FirestoreService, private obsService: ObsService) {
+
+    this.dataSource.paginator = this.paginator;
+
+    this.subUid = this.obsService.observableUid$.subscribe(() => {
+      this.getListaPuestos();
     });
-    this.subUid = this.auth.observableUid$.subscribe(() => {
-      this.puestos$ = this.puestosService.puestos;
-      this.getPuestos();
-    });
-    if (this.auth.uid) {
-      this.getPuestos()
+    this.subMessage = this.obsService.observableMessage$.subscribe((id) => {
+      console.log('entra al observable para eliminar', id);
+
+      this.puestosService.deletePuesto(String(id));
+    })
+
+    if (this.obsService.uid) {
+      this.getListaPuestos();
     }
   }
 
@@ -41,20 +46,55 @@ export class PuestosComponent implements OnInit {
 
   }
 
-  getPuestos() {
-    this.puestos$.subscribe((data: any) => {
-      console.log('PUESTOS', data);
-    })
+  ngOnDestroy() {
+    console.log('SE DESTRUYE EL COMPONENTE DE PUESTOS');
+    this.subUid.unsubscribe();
+    this.puestos$ = null;
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(DialogPuestosComponent, {
-      width: '700px',
-    });
+  getListaPuestos() {
+    console.log('ENTRA A getListaPuestos');
+    setTimeout(() => {
+      this.puestos$ = this.puestosService.puestos;
+      this.puestos$.subscribe((data: any) => {
+        console.log('ESTOS SON LOS PUESTOS', data);
+        this.dataSource = new MatTableDataSource<any>(data);
+        this.dataSource.paginator = this.paginator;
+      });
+    }, 300);
+  }
 
-    dialogRef.afterClosed().subscribe(puesto => {
+  deleteP(id: string) {
+    const message = {
+      type: 'delete',
+      class: 'alert alert-light',
+      message: '¿Desea eliminar este puesto?',
+      titulo: 'Eliminar'
+    }
+    this.obsService.openDialogMessage(message, id);
+  }
+
+  openDialog(puesto?: any) {
+    let dialogRef;
+    if (puesto) {
+      dialogRef = this.dialog.open(DialogPuestosComponent, {
+        width: '700px',
+        data: { puesto }
+      });
+    } else {
+      dialogRef = this.dialog.open(DialogPuestosComponent, {
+        width: '700px'
+      });
+    }
+    dialogRef.afterClosed().subscribe(info => {
       // console.log(`Dialog result: ${result}`);
-      this.puestosService.savePuesto(puesto);
+      if (info) {
+        if(puesto) {
+          this.puestosService.savePuesto(info, puesto.id);
+        } else {
+          this.puestosService.savePuesto(info);
+        }
+      }
     });
   }
 
@@ -70,17 +110,29 @@ export class DialogPuestosComponent {
   formPuesto: FormGroup;
   error: boolean = false;
 
-  constructor(public dialogRef: MatDialogRef<DialogPuestosComponent>) {
-    this.formPuesto = new FormGroup({
-      nombrePuesto: new FormControl('', Validators.required),
-      salarioMensual: new FormControl(0, [Validators.required, Validators.min(30)]),
-      salarioQuincenal: new FormControl(0, [Validators.required, Validators.min(15)]),
-      salarioDiario: new FormControl(0, [Validators.required, Validators.min(1)])
-    });
+  constructor(public dialogRef: MatDialogRef<DialogPuestosComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+
+    if (data) {
+      console.log(data);
+      this.formPuesto = new FormGroup({
+        nombrePuesto: new FormControl(data.puesto.nombrePuesto, Validators.required),
+        salarioMensual: new FormControl(data.puesto.salarioMensual, [Validators.required, Validators.min(30)]),
+        salarioQuincenal: new FormControl(data.puesto.salarioQuincenal, [Validators.required, Validators.min(15)]),
+        salarioDiario: new FormControl(data.puesto.salarioDiario, [Validators.required, Validators.min(1)])
+      });
+    } else {
+      this.formPuesto = new FormGroup({
+        nombrePuesto: new FormControl('', Validators.required),
+        salarioMensual: new FormControl(0, [Validators.required, Validators.min(30)]),
+        salarioQuincenal: new FormControl(0, [Validators.required, Validators.min(15)]),
+        salarioDiario: new FormControl(0, [Validators.required, Validators.min(1)])
+      });
+    }
+
   }
 
   accept() {
-    console.log(this.formPuesto);
+    console.log('BOTON ACEPTAR', this.formPuesto);
     const puesto = {
       nombrePuesto: this.formPuesto.get('nombrePuesto')?.value,
       salarioMensual: this.formPuesto.get('salarioMensual')?.value,
@@ -91,6 +143,7 @@ export class DialogPuestosComponent {
   }
 
   onNoClick(): void {
+    console.log('BOTON CANCELAR')
     this.dialogRef.close();
   }
 

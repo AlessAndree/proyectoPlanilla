@@ -18,4 +18,10 @@ export class MessageDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  accept() {
+    console.log('acepta eliminar');
+
+    this.dialogRef.close(true);
+  }
+
 }

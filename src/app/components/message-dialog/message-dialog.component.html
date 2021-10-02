@@ -4,6 +4,10 @@
     {{data.message.message}}
   </div>
 </div>
-<div mat-dialog-actions>
-  <button style="margin-left: auto;" mat-button mat-dialog-close>Aceptar</button>
+<div *ngIf="data.message.type == 'alert'" mat-dialog-actions>
+  <button type="button" style="margin-left: auto;" mat-raised-button mat-dialog-close>Aceptar</button>
+</div>
+<div *ngIf="data.message.type == 'delete'" mat-dialog-actions>
+  <button type="button" style="margin-left: auto;" mat-raised-button mat-dialog-close>Cancelar</button>
+  <button type="button" style="margin-left: 10px;" color="warn" (click)="accept()" mat-raised-button>Aceptar</button>
 </div>
