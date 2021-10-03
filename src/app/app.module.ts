@@ -24,6 +24,8 @@ import {NgParticlesModule} from "ng-particles";
 import { PuestosComponent, DialogPuestosComponent } from './components/puestos/puestos.component';
 import { MessageDialogComponent } from './components/message-dialog/message-dialog.component';
 import { ObsService } from './providers/obs.service';
+import { EmpleadosComponent, DialogEmpleadosComponent } from './components/empleados/empleados.component';
+import { EmpleadosService } from './providers/empleados.service';
 
 
 @NgModule({
@@ -34,12 +36,16 @@ import { ObsService } from './providers/obs.service';
     PruebaComponent,
     PuestosComponent,
     DialogPuestosComponent,
-    MessageDialogComponent
+    MessageDialogComponent,
+    EmpleadosComponent,
+    DialogEmpleadosComponent
   ],
   entryComponents: [
     PuestosComponent,
     DialogPuestosComponent,
-    MessageDialogComponent
+    MessageDialogComponent,
+    EmpleadosComponent,
+    DialogEmpleadosComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +59,7 @@ import { ObsService } from './providers/obs.service';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService, AuthGuardService, AngularFirestore, ObsService],
+  providers: [AuthService, AuthGuardService, AngularFirestore, ObsService, EmpleadosService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

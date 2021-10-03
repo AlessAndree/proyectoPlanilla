@@ -1,8 +1,7 @@
-<h1 mat-dialog-title>Agregar Puesto</h1>
+<h1 mat-dialog-title>Puesto</h1>
 <hr>
 <form [formGroup]="formPuesto" (ngSubmit)="accept()">
-<div mat-dialog-content>
-
+  <div mat-dialog-content>
     <mat-form-field class="full" appearance="outline">
       <mat-label>Nombre</mat-label>
       <input formControlName="nombrePuesto" name="nombrePuesto" type="text" matInput>

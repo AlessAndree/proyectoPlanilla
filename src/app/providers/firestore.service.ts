@@ -14,41 +14,38 @@ export class FirestoreService {
   subUid: Subscription;
 
   constructor(private readonly afs: AngularFirestore, private obsService: ObsService) {
-    console.log('ENTRA AL CONSTRUCTOR DEL SERVICIO PUESTOS');
     this.subUid = this.obsService.observableUid$.subscribe(() => {
       this.getPuestos();
     });
-    if(this.obsService.uid) {
+    if (this.obsService.uid) {
       this.getPuestos();
     }
   }
 
 
   deletePuesto(id: string) {
-    console.log('entra al servicio a eliminar', id);
-
     return new Promise(async (resolve, reject) => {
       try {
         const result = await this.puestosCollection.doc(id).delete();
-        const message = {
-          type: 'alert',
-          class: 'alert alert-success',
-          message: 'El puesto se borró correctamente.',
-          titulo: 'Eliminación Exitosa'
-        }
-        this.obsService.openDialogMessage(message);
+        this.activateMessage('alert', 'alert alert-success',
+          'El puesto se borró correctamente.', 'Eliminación Exitosa');
         resolve(result);
       } catch (err: any) {
-        const message = {
-          type: 'alert',
-          class: 'alert alert-danger',
-          message: 'El puesto falló al eliminarse.',
-          titulo: 'Error'
-        }
-        this.obsService.openDialogMessage(message);
+        this.activateMessage('alert', 'alert alert-danger',
+          'El puesto falló al eliminarse.', 'Error');
         reject(err.message);
       }
     })
+  }
+
+  activateMessage(tipo: string, clase: string, mensaje: string, titulo: string) {
+    const message = {
+      type: tipo,
+      class: clase,
+      message: mensaje,
+      titulo: titulo
+    }
+    this.obsService.openDialogMessage(message);
   }
 
   savePuesto(puesto: any, idPuesto?: string) {
@@ -57,27 +54,17 @@ export class FirestoreService {
         const id = idPuesto || this.afs.createId();
         const data = { id, ...puesto };
         let result = await this.puestosCollection.doc(id).set(data);
-        const message = {
-          type: 'alert',
-          class: 'alert alert-success',
-          message: 'El puesto se guardó correctamente.',
-          titulo: 'Registro Exitoso'
+        if (idPuesto) {
+          this.activateMessage('alert', 'alert alert-success',
+            'El puesto se editó correctamente.', 'Edición Exitosa');
+        } else {
+          this.activateMessage('alert', 'alert alert-success',
+            'El puesto se guardó correctamente.', 'Registro Exitoso');
         }
-        if(idPuesto) {
-          message.message = 'El puesto se editó correctamente';
-          message.titulo = 'Edición Exitosa';
-        }
-        // console.log('GUARDA');
-        this.obsService.openDialogMessage(message);
         resolve(result);
       } catch (err: any) {
-        const message = {
-          type: 'alert',
-          class: 'alert alert-danger',
-          message: 'El puesto falló al guardarse.',
-          titulo: 'Error'
-        }
-        this.obsService.openDialogMessage(message);
+        this.activateMessage('alert', 'alert alert-danger',
+          'El puesto falló al guardarse.', 'Error');
         reject(err.message);
       }
     })

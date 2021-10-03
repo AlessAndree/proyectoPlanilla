@@ -1,0 +1,56 @@
+<h1 mat-dialog-title>Empleado</h1>
+<hr>
+<form [formGroup]="formEmpleado" (ngSubmit)="accept()">
+
+  <div mat-dialog-content>
+
+    <mat-form-field class="middle" appearance="outline">
+      <mat-label>Nombre Completo</mat-label>
+      <input formControlName="nombreCompleto" name="nombreCompleto" type="text" matInput>
+    </mat-form-field>
+    <mat-form-field class="middle" appearance="outline">
+      <mat-label>Ubicación</mat-label>
+      <input formControlName="ubicacion" name="ubicacion" type="text" matInput>
+    </mat-form-field>
+    <mat-form-field class="middle" appearance="outline">
+      <mat-label>DPI</mat-label>
+      <input formControlName="dpi" name="dpi" type="text" matInput>
+    </mat-form-field>
+    <mat-form-field class="middle" appearance="outline">
+      <mat-label>Fecha de Nacimiento</mat-label>
+      <input formControlName="fechaNacimiento" name="fechaNacimiento" matInput [matDatepicker]="picker">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="middle" appearance="outline">
+      <mat-label>Fecha de Contratación</mat-label>
+      <input formControlName="fechaContrato" name="fechaContrato" matInput [matDatepicker]="picker2">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="middle" appearance="outline">
+      <mat-label>Banco</mat-label>
+      <input formControlName="banco" name="banco" type="text" matInput>
+    </mat-form-field>
+    <mat-form-field class="middle" appearance="outline">
+      <mat-label>No.Cuenta</mat-label>
+      <input formControlName="noCuenta" name="noCuenta" type="text" matInput>
+    </mat-form-field>
+
+    <mat-form-field class="middle" appearance="outline">
+      <mat-label>Puesto</mat-label>
+      <mat-select formControlName="puestoRef" name="puestoRef">
+        <mat-option *ngFor="let puesto of listPuestos" [value]="puesto.id">
+          {{puesto.nombrePuesto}} - Q.{{puesto.salarioMensual}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div style="margin-top: -15px;" mat-dialog-actions>
+      <button type="button" style="width: 50%;" mat-raised-button mat-dialog-close>Cancelar</button>
+      <button type="button" style="width: calc(50% - 8px);" mat-raised-button [disabled]="!formEmpleado.valid" color="primary" (click)="accept()">Aceptar</button>
+    </div>
+
+
+  </div>
+</form>

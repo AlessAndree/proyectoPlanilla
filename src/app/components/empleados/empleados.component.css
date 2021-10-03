@@ -1,0 +1,44 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.item {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.add {
+  background: #1e364d;
+  color: white;
+  border-radius: 5px;
+}
+
+.btnopt{
+  margin: 0 5px;
+  border-radius: 5px;
+  color: #1e364d;
+}
+
+.btnopt:hover {
+  color: white;
+}
+
+
+.full {
+  width: 100%;
+}
+
+.example-right-align {
+  text-align: right;
+}
+
+.head {
+  background: #1e364d;
+  color: white;
+}
+
+.middle {
+  width: 48%;
+  margin: 0px 0.5%;
+}

@@ -32,8 +32,6 @@ export class PuestosComponent implements OnInit, OnDestroy {
       this.getListaPuestos();
     });
     this.subMessage = this.obsService.observableMessage$.subscribe((id) => {
-      console.log('entra al observable para eliminar', id);
-
       this.puestosService.deletePuesto(String(id));
     })
 
@@ -47,17 +45,14 @@ export class PuestosComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('SE DESTRUYE EL COMPONENTE DE PUESTOS');
     this.subUid.unsubscribe();
     this.puestos$ = null;
   }
 
   getListaPuestos() {
-    console.log('ENTRA A getListaPuestos');
     setTimeout(() => {
       this.puestos$ = this.puestosService.puestos;
       this.puestos$.subscribe((data: any) => {
-        console.log('ESTOS SON LOS PUESTOS', data);
         this.dataSource = new MatTableDataSource<any>(data);
         this.dataSource.paginator = this.paginator;
       });
@@ -113,7 +108,6 @@ export class DialogPuestosComponent {
   constructor(public dialogRef: MatDialogRef<DialogPuestosComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
 
     if (data) {
-      console.log(data);
       this.formPuesto = new FormGroup({
         nombrePuesto: new FormControl(data.puesto.nombrePuesto, Validators.required),
         salarioMensual: new FormControl(data.puesto.salarioMensual, [Validators.required, Validators.min(30)]),
@@ -132,18 +126,10 @@ export class DialogPuestosComponent {
   }
 
   accept() {
-    console.log('BOTON ACEPTAR', this.formPuesto);
-    const puesto = {
-      nombrePuesto: this.formPuesto.get('nombrePuesto')?.value,
-      salarioMensual: this.formPuesto.get('salarioMensual')?.value,
-      salarioQuincenal: this.formPuesto.get('salarioQuincenal')?.value,
-      salarioDiario: this.formPuesto.get('salarioDiario')?.value
-    }
-    this.dialogRef.close(puesto);
+    this.dialogRef.close(this.formPuesto.value);
   }
 
   onNoClick(): void {
-    console.log('BOTON CANCELAR')
     this.dialogRef.close();
   }
 
