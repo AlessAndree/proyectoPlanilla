@@ -40,9 +40,8 @@
 
 .middle {
   width: 48%;
-  margin: 0px 0.5%;
+  margin: 0px 1%;
 }
-
 
 .table-container {
   height: 100% ;
@@ -50,8 +49,3 @@
   max-width: 100%;
   overflow: auto;
 }
-
-/* table {
-  min-width: max-content;
-  width: 100%;
-} */

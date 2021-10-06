@@ -1,0 +1,95 @@
+<h1 mat-dialog-title>Ajustes</h1>
+<hr>
+<form [formGroup]="formAjuste" (ngSubmit)="accept()">
+
+  <div mat-dialog-content>
+
+    <mat-form-field  class="middle" appearance="outline">
+      <mat-label>Descripción</mat-label>
+      <input  formControlName="descripcion" name="descripcion" type="text" matInput>
+    </mat-form-field>
+
+    <mat-form-field  class="middle" appearance="outline">
+      <mat-label>Tipo de Ajuste</mat-label>
+      <mat-select  (ngModelChange)="selectTipoAjuste()" formControlName="tipoAjuste" name="tipoAjuste">
+        <mat-option value="Bono"> Bono </mat-option>
+        <mat-option value="Descuento"> Descuento </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="formAjuste.get('tipoAjuste')?.value" class="middle" appearance="outline">
+      <mat-label>Definición del Ajuste</mat-label>
+      <mat-select  (ngModelChange)="selectDefinicionAjuste()" formControlName="definicionAjuste" name="definicionAjuste">
+        <mat-option value="Porcentaje"> Porcentaje sobre el sueldo </mat-option>
+        <mat-option value="Cantidad"> Cantidad </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="formAjuste.get('definicionAjuste')?.value == 'Porcentaje'" class="middle" appearance="outline">
+      <mat-label>Porcentaje</mat-label>
+      <input  formControlName="porcentaje" name="porcentaje" type="number" matInput>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="formAjuste.get('definicionAjuste')?.value == 'Cantidad'" class="middle" appearance="outline">
+      <mat-label>Tipo Cantidad</mat-label>
+      <mat-select  (ngModelChange)="selectTipoCantidad()" formControlName="tipoCantidad" name="tipoCantidad">
+        <mat-option value="Variable"> Cantidad Variable </mat-option>
+        <mat-option value="Fija"> Cantidad Preestablecida </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- *ngIf="formAjuste.get('tipoCantidad')?.value == 'Fija'" -->
+    <mat-form-field *ngIf="formAjuste.get('tipoCantidad')?.value == 'Fija'" class="middle" appearance="outline">
+      <mat-label>Cantidad</mat-label>
+      <input  formControlName="cantidad" name="cantidad" type="number" matInput>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="formAjuste.get('tipoAjuste')?.value == 'Bono'" class="middle" appearance="outline">
+      <mat-label>Bono Afecto a Descuentos</mat-label>
+      <mat-select  formControlName="afectoDescuentos" name="afectoDescuentos">
+        <mat-option [value]="true"> Si </mat-option>
+        <mat-option [value]="false"> No </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="formAjuste.get('tipoAjuste')?.value == 'Bono'" class="middle" appearance="outline">
+      <mat-label>Total Proporcional a Días Laborados</mat-label>
+      <mat-select  formControlName="totalProporcionalDiasLab" name="totalProporcionalDiasLab">
+        <mat-option [value]="true"> Si </mat-option>
+        <mat-option [value]="false"> No </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="middle" appearance="outline">
+      <mat-label>Aplica para Todos</mat-label>
+      <mat-select  formControlName="aplicaTodos" name="aplicaTodos">
+        <mat-option [value]="true"> Si </mat-option>
+        <mat-option [value]="false"> No </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="middle" appearance="outline">
+      <mat-label>Efectuar el Ajuste</mat-label>
+      <mat-select  formControlName="efectuarAjuste" name="efectuarAjuste">
+        <mat-option value="finMes"> Fin de Mes </mat-option>
+        <mat-option value="totalQuincena"> Total en Quincena </mat-option>
+        <mat-option value="proporcionalQuincena"> Total Proporcional en Quincena </mat-option>
+      </mat-select>
+      <mat-hint>Afecta sólo si realiza planillas quincenales.</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field class="middle" appearance="outline">
+      <mat-label>Estado</mat-label>
+      <mat-select  formControlName="estado" name="estado">
+        <mat-option [value]="true"> Activo </mat-option>
+        <mat-option [value]="false">  Inactivo </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+
+  </div>
+  <div style="margin-top: -15px;" mat-dialog-actions>
+    <button type="button" style="width: 50%;" mat-raised-button mat-dialog-close>Cancelar</button>
+    <button type="submit" style="width: calc(50% - 8px);" mat-raised-button [disabled]="!formAjuste.valid" color="primary">Aceptar</button>
+  </div>
+</form>

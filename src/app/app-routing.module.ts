@@ -7,6 +7,7 @@ import { PruebaComponent } from './components/prueba/prueba.component';
 import { AngularFireAuthGuard, redirectLoggedInTo, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 import { PuestosComponent } from './components/puestos/puestos.component';
 import { EmpleadosComponent } from './components/empleados/empleados.component';
+import { AjustesComponent } from './components/ajustes/ajustes.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 const redirectLoggedInToHome = () => redirectLoggedInTo(['inicio']);
@@ -20,6 +21,9 @@ const routes: Routes = [
     canActivate: [AngularFireAuthGuard],
     data: { authGuardPipe: redirectUnauthorizedToLogin }},
     {path: 'empleados', component:EmpleadosComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }},
+    {path: 'ajustes', component:AjustesComponent,
     canActivate: [AngularFireAuthGuard],
     data: { authGuardPipe: redirectUnauthorizedToLogin }},
     {path: '', pathMatch: 'full', redirectTo: 'inicio'}

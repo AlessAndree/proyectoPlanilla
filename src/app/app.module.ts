@@ -26,6 +26,8 @@ import { MessageDialogComponent } from './components/message-dialog/message-dial
 import { ObsService } from './providers/obs.service';
 import { EmpleadosComponent, DialogEmpleadosComponent } from './components/empleados/empleados.component';
 import { EmpleadosService } from './providers/empleados.service';
+import { AjustesComponent, DialogAjustesComponent } from './components/ajustes/ajustes.component';
+import { AjustesService } from './providers/ajustes.service';
 
 
 @NgModule({
@@ -38,14 +40,18 @@ import { EmpleadosService } from './providers/empleados.service';
     DialogPuestosComponent,
     MessageDialogComponent,
     EmpleadosComponent,
-    DialogEmpleadosComponent
+    DialogEmpleadosComponent,
+    AjustesComponent,
+    DialogAjustesComponent
   ],
   entryComponents: [
     PuestosComponent,
     DialogPuestosComponent,
     MessageDialogComponent,
     EmpleadosComponent,
-    DialogEmpleadosComponent
+    DialogEmpleadosComponent,
+    AjustesComponent,
+    DialogAjustesComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +65,7 @@ import { EmpleadosService } from './providers/empleados.service';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService, AuthGuardService, AngularFirestore, ObsService, EmpleadosService],
+  providers: [AuthService, AuthGuardService, AngularFirestore, ObsService, EmpleadosService, AjustesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
