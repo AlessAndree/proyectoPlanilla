@@ -204,7 +204,7 @@ export class PlanillaComponent implements OnInit, OnDestroy {
         this.data = data;
         this.initSelectEmpleados(data);
       }, err => {
-        console.log(err);
+        // console.log(err);
       })
       // console.log('ESTA ES LA PLANILLA', this.planilla);
       this.empleados = JSON.parse(this.planilla?.empleados ? this.planilla?.empleados : '[]')
@@ -338,12 +338,12 @@ export class PlanillaComponent implements OnInit, OnDestroy {
 
   selectEmpleadoActive() {
     this.userActive = this.empleadosSelect.find(empleado => empleado.id == this.formRegisto.get('empleadoActive')?.value);
-    console.log('USUARIO SELECCIONADO', this.userActive);
+    // console.log('USUARIO SELECCIONADO', this.userActive);
   }
 
   prueba() {
-    console.log(this.formRegisto)
-    console.log(this.formAjustes)
+    // console.log(this.formRegisto)
+    // console.log(this.formAjustes)
   }
 
 

@@ -19,7 +19,7 @@ export class ObsService {
   constructor(public dialog: MatDialog) { }
 
   ejecutarObservableUid(uid: any) {
-    console.log('EJECUTA ejecutarObservableUid', uid);
+    // console.log('EJECUTA ejecutarObservableUid', uid);
     this.uid = uid;
     this.subjectUid.next();
   }
@@ -33,7 +33,7 @@ export class ObsService {
       // console.log(`Dialog result: ${result}`);
       if (info) {
         if(id) {
-          console.log('ENTRA A DESPUES DE CERRAR,', id);
+          // console.log('ENTRA A DESPUES DE CERRAR,', id);
 
           this.subjectMessage.next(id);
           // this.puestosService.savePuesto(info, puesto.id);

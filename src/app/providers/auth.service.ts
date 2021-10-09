@@ -43,7 +43,7 @@ export class AuthService {
 
   logout() {
     firebase.auth().signOut().then((data: any) => {
-      console.log(data);
+      // console.log(data);
       this.router.navigate(['login']);
     });
   }

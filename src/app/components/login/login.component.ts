@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/providers/auth.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import * as crypto from 'crypto-js';
 
 import {MatSnackBar, MAT_SNACK_BAR_DATA} from '@angular/material/snack-bar';
 
@@ -43,21 +44,38 @@ export class LoginComponent implements OnInit {
   async clickRegister() {
 
     try {
-
-      const user = await this._authService.register(this.formRegister.get('emailRegister')?.value, this.formRegister.get('passRegister1')?.value);
+      const passCrip = crypto.SHA512(this.formRegister.get('passRegister1')?.value).toString();
+      const user = await this._authService.register(this.formRegister.get('emailRegister')?.value, passCrip);
       if (user) {
         this.router.navigate(['inicio']);
       }
-
     } catch (err: any) {
-      console.error('ESTE ES EL ERROR', err);
+      // console.error('ESTE ES EL ERROR', err);
       if(err.code == 'auth/email-already-in-use') {
         this.openSnackBar('Error, el correo ingresado ya esta registrado.');
       } else if ( err.code == 'auth/weak-password') {
         this.openSnackBar('Error, la contraseña debe tener al menos 6 caracteres.');
+      } else {
+        this.openSnackBar('Error, no se pudo registrar.');}
+    }
+  }
+
+  async clickEmailPass() {
+    try {
+      const passCrip = crypto.SHA512(this.formLogin.get('pass')?.value).toString();
+      const user = await this._authService.loginWithEmailPass(this.formLogin.get('email')?.value, passCrip);
+      if (user) {
+        this.router.navigate(['inicio']);
+      }
+    } catch (err: any) {
+      if(err.code == 'auth/wrong-password') {
+        this.openSnackBar('Error, la contraseña es invalida.');
+      } else if(err.code == 'auth/user-not-found') {
+        this.openSnackBar('Error, usuario no encontrado.');
+      } else {
+        this.openSnackBar('Error, no se pudo iniciar sesión.');
       }
     }
-
   }
 
 
@@ -65,20 +83,13 @@ export class LoginComponent implements OnInit {
     try {
       const user = await this._authService.loginWithGoogle();
       if (user) {
-        console.log('usuario', user);
+        // console.log('usuario', user);
         this.router.navigate(['inicio']);
       }
     } catch (err) {console.error(err);}
   }
 
-  async clickEmailPass() {
-    try {
-      const user = await this._authService.loginWithEmailPass(this.formLogin.get('email')?.value, this.formLogin.get('pass')?.value);
-      if (user) {
-        this.router.navigate(['inicio']);
-      }
-    } catch (err) {console.error(err);}
-  }
+
 
   logOut() {
     this._authService.logout();
@@ -99,6 +110,6 @@ export class LoginComponent implements OnInit {
 })
 export class loginMessageComponent {
   constructor(@Inject(MAT_SNACK_BAR_DATA) public data: string) {
-    console.log('ESTO ES LO QUE TRAE', data)
+    // // console.log('ESTO ES LO QUE TRAE', data)
   }
 }

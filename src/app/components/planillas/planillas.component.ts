@@ -31,7 +31,7 @@ export class PlanillasComponent implements OnInit, OnDestroy{
       this.getListaPlanillas();
     });
     this.subMessage = this.obsService.observableMessage$.subscribe((id) => {
-      console.log('ENTRA ACÁ EN SUBMENSAJE PLANILLA');
+      // console.log('ENTRA ACÁ EN SUBMENSAJE PLANILLA');
 
       this.planillaService.deletePlanilla(String(id));
     });

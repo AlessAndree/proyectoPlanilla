@@ -72,7 +72,7 @@ export class PlanillasService {
         //   this.activateMessage('alert', 'alert alert-success',
         //     'La planilla se creó correctamente.', 'Registro Exitoso');
         // }
-        console.log('ESTO PASA EN SAVEPLANILLA', id);
+        // console.log('ESTO PASA EN SAVEPLANILLA', id);
         // this.router.navigate(['planillas', id])
 
         resolve(result);
@@ -137,7 +137,7 @@ export class PlanillasService {
           this.activateMessage('alert', 'alert alert-success',
             'La planilla se creó correctamente.', 'Registro Exitoso');
         }
-        console.log('ESTO PASA EN SAVEPLANILLA', id);
+        // console.log('ESTO PASA EN SAVEPLANILLA', id);
         this.router.navigate(['planillas', id])
 
         resolve(result);

@@ -11,7 +11,7 @@ export class MessageDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<MessageDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-      console.log('message',data);
+      // console.log('message',data);
 
     }
 
@@ -19,7 +19,7 @@ export class MessageDialogComponent implements OnInit {
   }
 
   accept() {
-    console.log('acepta eliminar');
+    // console.log('acepta eliminar');
 
     this.dialogRef.close(true);
   }
