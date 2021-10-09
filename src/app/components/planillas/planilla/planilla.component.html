@@ -101,7 +101,7 @@
         </div>
       </form>
       <form
-        *ngIf="this.formAjustes && showFormAjuste"
+        *ngIf="this.formAjustes"
         [formGroup]="this.formAjustes"
       >
         <div class="row">
@@ -190,6 +190,7 @@
           Agregar
         </button>
       </div>
+      <!-- <button type="button" (click)="prueba()">      </button> -->
     </mat-card>
   </mat-tab>
 

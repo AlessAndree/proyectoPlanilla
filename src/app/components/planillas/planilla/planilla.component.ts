@@ -20,7 +20,6 @@ export class PlanillaComponent implements OnInit, OnDestroy {
   columnsToDisplay: string[] = this.displayedColumns.slice();
   data: any[] = [];
 
-  showFormAjuste = false;
 
   formRegisto!: FormGroup;
   userActive: any;
@@ -38,6 +37,7 @@ export class PlanillaComponent implements OnInit, OnDestroy {
   subMessage: Subscription;
 
   formCreated = false;
+  createdTable = false;
 
   constructor(private planillasService: PlanillasService, private obsService: ObsService, private rutaActiva: ActivatedRoute, private fb: FormBuilder) {
     const id = this.rutaActiva.snapshot.params.id;
@@ -59,7 +59,7 @@ export class PlanillaComponent implements OnInit, OnDestroy {
 
   createForm() {
     this.formCreated = true;
-    console.log('ESTE ES EL CREATE FORM');
+    // console.log('ESTE ES EL CREATE FORM');
 
     let maxValidOrdinario;
     let maxValidSeptimo;
@@ -79,22 +79,28 @@ export class PlanillaComponent implements OnInit, OnDestroy {
 
     this.ajustes = JSON.parse(this.planilla.ajustes);
     if (this.ajustes.length != 0) {
-      console.log('ESTE ES EL CREATE FORM AJUSTES');
+      // console.log('ESTE ES EL CREATE FORM AJUSTES');
 
       this.formAjustes = this.fb.group({
       });
       this.ajustes.forEach(ajuste => {
         if (ajuste.estado == true) {
 
-          console.log(ajuste);
+          // console.log(ajuste);
           let valorAplica;
           if (ajuste.aplicaTodos == false) {
             valorAplica = null;
           } else {
             valorAplica = true;
           }
+          if (this.formAjustes.get('aplica' + ajuste.id)) {
+            this.formAjustes.removeControl('aplica' + ajuste.id);
+          }
           this.formAjustes.addControl('aplica' + ajuste.id, new FormControl({ value: valorAplica, disabled: ajuste.aplicaTodos }, [Validators.required]));
 
+          if(this.formAjustes.get(ajuste.id)) {
+            this.formAjustes.removeControl(ajuste.id);
+          }
           if (ajuste.definicionAjuste == 'Porcentaje') {
             this.formAjustes.addControl(ajuste.id, new FormControl({ value: ajuste.porcentaje, disabled: false }, [Validators.required]));
           } else {
@@ -103,12 +109,14 @@ export class PlanillaComponent implements OnInit, OnDestroy {
           this.useAjustes.push(ajuste);
         }
       })
-      this.showFormAjuste = true;
-      this.createTable();
+      if(this.createdTable == false) {
+        this.createTable();
+      }
     }
   }
 
   createTable() {
+    this.createdTable = true;
     if (this.useAjustes.length > 0) {
 
       this.useAjustes.forEach(ajuste => {
@@ -143,8 +151,8 @@ export class PlanillaComponent implements OnInit, OnDestroy {
       this.displayedColumns.push('Opción');
       this.columnsToDisplay.push('Opción');
 
-      console.log(this.displayedColumns);
-      console.log(this.columnsToDisplay);
+      // console.log(this.displayedColumns);
+      // console.log(this.columnsToDisplay);
     } else {
       this.columnsToDisplay.push('Salario Total');
       this.displayedColumns.push('Salario Total');
@@ -154,8 +162,8 @@ export class PlanillaComponent implements OnInit, OnDestroy {
       this.displayedColumns.push('Liquido');
       this.displayedColumns.push('Opción');
       this.columnsToDisplay.push('Opción');
-      console.log(this.displayedColumns);
-      console.log(this.columnsToDisplay);
+      // console.log(this.displayedColumns);
+      // console.log(this.columnsToDisplay);
     }
 
   }
@@ -166,7 +174,7 @@ export class PlanillaComponent implements OnInit, OnDestroy {
 
   changeAplica(id: string) {
     const ajuste = this.useAjustes.find(ajuste => ajuste.id == id);
-    console.log(ajuste);
+    // console.log(ajuste);
     if (ajuste.tipoCantidad == 'Fija') {
       if (this.formAjustes.get('aplica' + id)?.value == true) {
         this.formAjustes.get(id)?.setValue(ajuste.cantidad);
@@ -185,7 +193,7 @@ export class PlanillaComponent implements OnInit, OnDestroy {
   }
 
   getPlanilla(id: string) {
-    console.log('ENTRA AL GET PLANILLA');
+    // console.log('ENTRA AL GET PLANILLA');
 
     this.planillasService.planillas.subscribe((data: any[]) => {
       this.planilla = data.find(planilla => planilla.id == id);
@@ -198,7 +206,7 @@ export class PlanillaComponent implements OnInit, OnDestroy {
       }, err => {
         console.log(err);
       })
-      console.log('ESTA ES LA PLANILLA', this.planilla);
+      // console.log('ESTA ES LA PLANILLA', this.planilla);
       this.empleados = JSON.parse(this.planilla?.empleados ? this.planilla?.empleados : '[]')
       // this.empleados.forEach(empleado => {
       //   this.empleadosSelect.push(empleado);
@@ -228,10 +236,10 @@ export class PlanillaComponent implements OnInit, OnDestroy {
 
   accept() {
     if (this.formAjustes) {
-      console.log(this.formAjustes.value);
+      // console.log(this.formAjustes.value);
     }
     if (this.formRegisto) {
-      console.log(this.formRegisto.value);
+      // console.log(this.formRegisto.value);
     }
     let registro: any = {
       Empleado: this.userActive.nombreCompleto,
@@ -272,7 +280,7 @@ export class PlanillaComponent implements OnInit, OnDestroy {
       this.ajustesDescuentos.forEach(ajuste => {
 
         let valor = Number(this.formAjustes.get(ajuste.id)?.value);
-        console.log('descuento', ajuste, valor);
+        // console.log('descuento', ajuste, valor);
         if (ajuste.definicionAjuste == 'Porcentaje') {
           valor = parseFloat(((salarioTotal * valor) / 100).toFixed(2));
           registro[ajuste.descripcion] = valor;
@@ -311,10 +319,17 @@ export class PlanillaComponent implements OnInit, OnDestroy {
 
 
 
-    console.log('ESTE ES EL REGISTRO', registro);
+    // console.log('ESTE ES EL REGISTRO', registro);
     this.planillasService.saveRegistro(registro);
     this.formAjustes.reset();
     this.formRegisto.reset();
+    // this.formAjustes = new FormGroup( {
+
+    // });
+    this.useAjustes = [];
+    // this.formAjustes = this.fb.group({});
+    this.formCreated = false;
+    this.createForm();
     // const list = [registro];
     // this.data = list;
   }
@@ -324,6 +339,11 @@ export class PlanillaComponent implements OnInit, OnDestroy {
   selectEmpleadoActive() {
     this.userActive = this.empleadosSelect.find(empleado => empleado.id == this.formRegisto.get('empleadoActive')?.value);
     console.log('USUARIO SELECCIONADO', this.userActive);
+  }
+
+  prueba() {
+    console.log(this.formRegisto)
+    console.log(this.formAjustes)
   }
 
 
