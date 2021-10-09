@@ -1,0 +1,196 @@
+<div class="item">
+  <button
+    type="button"
+    routerLink="/planillas"
+    class="add"
+    matTooltip="Regresar"
+    style="margin-right: 10px; margin-bottom: 5px"
+    mat-icon-button
+  >
+    <mat-icon style="margin-top: -5px">arrow_back</mat-icon>
+  </button>
+  <h1 style="margin: auto" class="font-monospace">
+    <strong> {{ planilla?.descripcionPlanilla }} </strong>
+    <span style="font-weight: lighter"> | {{ planilla?.tipoPlanilla }} </span>
+  </h1>
+  <span class="spacer"></span>
+  <h2 style="margin: auto">
+    {{ planilla?.fechaPlanilla.toDate() | date: "MM/yyyy" }}
+  </h2>
+</div>
+<mat-divider></mat-divider>
+<br />
+<mat-tab-group>
+
+
+  <mat-tab label="Planilla">
+
+
+    <div class="mat-elevation-z2 table-container">
+
+      <table mat-table [dataSource]="data">
+        <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+          <th class="head" mat-header-cell *matHeaderCellDef> {{column}} </th>
+          <td class="text-center" mat-cell *matCellDef="let element">
+            {{element[column]}}
+            <div *ngIf="column == 'Opción'">
+              <button class="btnopt btn-outline-danger" matTooltip="Eliminar"  matTooltipPosition="right" mat-icon-button>
+                <mat-icon (click)="deleteP(element['id'])" style="margin-top: -5px;">delete</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+      </table>
+    </div>
+
+  </mat-tab>
+
+
+  <mat-tab label="Registro">
+    <mat-card>
+      <form *ngIf="this.formRegisto" [formGroup]="formRegisto">
+        <div class="row">
+          <mat-form-field class="col-md-3 col-sm-6" appearance="outline">
+            <mat-label>Selecione un Empleado</mat-label>
+            <mat-select
+              (ngModelChange)="selectEmpleadoActive()"
+              formControlName="empleadoActive"
+              name="empleadoActive"
+            >
+              <mat-option
+                *ngFor="let empleado of empleadosSelect"
+                [value]="empleado.id"
+              >
+                {{ empleado.nombreCompleto }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-3 col-sm-6" appearance="outline">
+            <mat-label>Días Ordinarios Trabajados</mat-label>
+            <input
+              formControlName="diasOrdinarios"
+              name="diasOrdinarios"
+              type="number"
+              matInput
+            />
+          </mat-form-field>
+
+          <mat-form-field class="col-md-3 col-sm-6" appearance="outline">
+            <mat-label>Días Séptimos</mat-label>
+            <input
+              formControlName="diasSeptimos"
+              name="diasSeptimos"
+              type="number"
+              matInput
+            />
+          </mat-form-field>
+
+          <mat-form-field class="col-md-3 col-sm-6" appearance="outline">
+            <mat-label>Días de Vacaciones</mat-label>
+            <input
+              formControlName="vacaciones"
+              name="vacaciones"
+              type="number"
+              matInput
+            />
+          </mat-form-field>
+        </div>
+      </form>
+      <form
+        *ngIf="this.formAjustes && showFormAjuste"
+        [formGroup]="this.formAjustes"
+      >
+        <div class="row">
+          <!-- <div *ngFor="let ajuste of useAjustes" > -->
+          <!-- [hidden]="ajuste.aplicaTodos" -->
+
+          <mat-form-field
+            *ngFor="let ajuste of useAjustes"
+            class="col-md-3 col-sm-6"
+            appearance="outline"
+            [hidden]="ajuste.aplicaTodos"
+          >
+            <mat-label>Aplica {{ ajuste.descripcion }} </mat-label>
+            <mat-select
+              (ngModelChange)="changeAplica(ajuste.id)"
+              [formControlName]="'aplica' + ajuste.id"
+            >
+              <mat-option [value]="true"> Si </mat-option>
+              <mat-option [value]="false"> No </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field
+            *ngFor="let ajuste of useAjustes"
+            class="col-md-3 col-sm-6"
+            appearance="outline"
+            [hidden]="
+              ajuste.definicionAjuste == 'Porcentaje' ||
+              (ajuste.definicionAjuste == 'Cantidad' &&
+                ajuste.tipoCantidad == 'Fija') ||
+              this.formAjustes.get('aplica' + ajuste.id)?.value == null ||
+                this.formAjustes.get('aplica' + ajuste.id)?.value == false
+            "
+          >
+            <mat-label>Valor {{ ajuste.descripcion }}</mat-label>
+            <input
+              [formControlName]="ajuste.id"
+              [name]="ajuste.id"
+              type="number"
+              matInput
+            />
+          </mat-form-field>
+
+          <!-- </div> -->
+        </div>
+      </form>
+      <div
+        class="d-grid gap-2 col-6 mx-auto"
+        *ngIf="this.formAjustes && !this.formRegisto"
+      >
+        <button
+          type="button"
+          (click)="accept()"
+          [disabled]="!this.formAjustes.valid"
+          mat-flat-button
+          color="primary"
+        >
+          Agregar
+        </button>
+      </div>
+      <div
+        class="d-grid gap-2 col-6 mx-auto"
+        *ngIf="!this.formAjustes && this.formRegisto"
+      >
+        <button
+          type="button"
+          (click)="accept()"
+          [disabled]="!this.formRegisto.valid"
+          mat-flat-button
+          color="primary"
+        >
+          Agregar
+        </button>
+      </div>
+      <div
+        class="d-grid gap-2 col-6 mx-auto"
+        *ngIf="this.formAjustes && this.formRegisto"
+      >
+        <button
+          type="button"
+          (click)="accept()"
+          [disabled]="!this.formAjustes.valid || !this.formRegisto.valid"
+          mat-flat-button
+          color="primary"
+        >
+          Agregar
+        </button>
+      </div>
+    </mat-card>
+  </mat-tab>
+
+</mat-tab-group>

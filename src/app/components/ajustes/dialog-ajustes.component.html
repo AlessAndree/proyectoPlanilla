@@ -20,7 +20,7 @@
     <mat-form-field *ngIf="formAjuste.get('tipoAjuste')?.value" class="middle" appearance="outline">
       <mat-label>Definición del Ajuste</mat-label>
       <mat-select  (ngModelChange)="selectDefinicionAjuste()" formControlName="definicionAjuste" name="definicionAjuste">
-        <mat-option value="Porcentaje"> Porcentaje sobre el sueldo </mat-option>
+        <mat-option *ngIf="formAjuste.get('tipoAjuste')?.value == 'Descuento'" value="Porcentaje"> Porcentaje sobre el sueldo </mat-option>
         <mat-option value="Cantidad"> Cantidad </mat-option>
       </mat-select>
     </mat-form-field>

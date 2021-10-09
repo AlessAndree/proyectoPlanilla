@@ -8,6 +8,8 @@ import { AngularFireAuthGuard, redirectLoggedInTo, redirectUnauthorizedTo } from
 import { PuestosComponent } from './components/puestos/puestos.component';
 import { EmpleadosComponent } from './components/empleados/empleados.component';
 import { AjustesComponent } from './components/ajustes/ajustes.component';
+import { PlanillasComponent } from './components/planillas/planillas.component';
+import { PlanillaComponent } from './components/planillas/planilla/planilla.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 const redirectLoggedInToHome = () => redirectLoggedInTo(['inicio']);
@@ -24,6 +26,12 @@ const routes: Routes = [
     canActivate: [AngularFireAuthGuard],
     data: { authGuardPipe: redirectUnauthorizedToLogin }},
     {path: 'ajustes', component:AjustesComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }},
+    {path: 'planillas', component:PlanillasComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }},
+    {path: 'planillas/:id', component:PlanillaComponent,
     canActivate: [AngularFireAuthGuard],
     data: { authGuardPipe: redirectUnauthorizedToLogin }},
     {path: '', pathMatch: 'full', redirectTo: 'inicio'}

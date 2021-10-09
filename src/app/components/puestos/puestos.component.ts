@@ -46,6 +46,7 @@ export class PuestosComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subUid.unsubscribe();
+    this.subMessage.unsubscribe();
     this.puestos$ = null;
   }
 

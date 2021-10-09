@@ -33,6 +33,8 @@ export class ObsService {
       // console.log(`Dialog result: ${result}`);
       if (info) {
         if(id) {
+          console.log('ENTRA A DESPUES DE CERRAR,', id);
+
           this.subjectMessage.next(id);
           // this.puestosService.savePuesto(info, puesto.id);
         }

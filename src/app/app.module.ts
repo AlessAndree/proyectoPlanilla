@@ -28,6 +28,10 @@ import { EmpleadosComponent, DialogEmpleadosComponent } from './components/emple
 import { EmpleadosService } from './providers/empleados.service';
 import { AjustesComponent, DialogAjustesComponent } from './components/ajustes/ajustes.component';
 import { AjustesService } from './providers/ajustes.service';
+import { PlanillasComponent } from './components/planillas/planillas.component';
+import { DialogPlanillaComponent } from './components/planillas/dialog-planilla/dialog-planilla.component';
+import { PlanillasService } from './providers/planillas.service';
+import { PlanillaComponent } from './components/planillas/planilla/planilla.component';
 
 
 @NgModule({
@@ -42,7 +46,10 @@ import { AjustesService } from './providers/ajustes.service';
     EmpleadosComponent,
     DialogEmpleadosComponent,
     AjustesComponent,
-    DialogAjustesComponent
+    DialogAjustesComponent,
+    PlanillasComponent,
+    DialogPlanillaComponent,
+    PlanillaComponent
   ],
   entryComponents: [
     PuestosComponent,
@@ -65,7 +72,10 @@ import { AjustesService } from './providers/ajustes.service';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService, AuthGuardService, AngularFirestore, ObsService, EmpleadosService, AjustesService],
+  providers: [
+    AuthService, AuthGuardService, AngularFirestore, ObsService,
+    EmpleadosService, AjustesService, PlanillasService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

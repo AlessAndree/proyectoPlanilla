@@ -1,0 +1,42 @@
+<h1 mat-dialog-title>Nueva Planilla</h1>
+<hr />
+<form [formGroup]="formPlanilla" (ngSubmit)="accept()">
+  <div mat-dialog-content>
+
+    <mat-form-field  class="middle" appearance="outline">
+      <mat-label>Descripción</mat-label>
+      <input  formControlName="descripcionPlanilla" name="descripcionPlanilla" type="text" matInput>
+    </mat-form-field>
+
+    <mat-form-field  class="middle" appearance="outline">
+      <mat-label>Tipo de la Planilla</mat-label>
+      <mat-select formControlName="tipoPlanilla" name="tipoPlanilla">
+        <mat-option value="Mensual"> Mensual </mat-option>
+        <mat-option value="Quincenal"> Quincenal </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="middle" appearance="outline">
+      <mat-label>Mes y Año</mat-label>
+      <input matInput [matDatepicker]="dp" formControlName="fechaPlanilla" name="fechaPlanilla">
+      <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+      <mat-datepicker #dp
+                      startView="multi-year"
+                      (yearSelected)="chosenYearHandler($event)"
+                      (monthSelected)="chosenMonthHandler($event, dp)"
+                      panelClass="example-month-picker">
+      </mat-datepicker>
+    </mat-form-field>
+
+  </div>
+
+  <div *ngIf="formPlanilla.get('tipoPlanilla')?.value == 'Quincenal'" class="alert alert-danger text-center" role="alert">
+    Las Planillas Quincenales estarán disponibles próximamente.
+  </div>
+
+  <div style="margin-top: -15px;" mat-dialog-actions>
+    <button type="button" style="width: 50%;" mat-raised-button mat-dialog-close>Cancelar</button>
+    <button type="submit" style="width: calc(50% - 8px);" mat-raised-button [disabled]="(!formPlanilla.valid) || (!this.obtieneAjustes || !this.obtieneEmpleados) || (formPlanilla.get('tipoPlanilla')?.value == 'Quincenal')" color="primary">Aceptar</button>
+  </div>
+
+</form>

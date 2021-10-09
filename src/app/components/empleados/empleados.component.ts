@@ -44,6 +44,7 @@ export class EmpleadosComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subUid.unsubscribe();
+    this.subMessage.unsubscribe();
     this.empleados$ = null;
   }
 

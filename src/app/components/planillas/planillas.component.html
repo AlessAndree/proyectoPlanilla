@@ -1,0 +1,45 @@
+<div class="item">
+  <h1 class="font-monospace" style="font-weight: bold;">Planillas</h1>
+  <span class="spacer"></span>
+  <button (click)="openDialog()" class="add" matTooltip="Crear" matTooltipPosition="left" mat-icon-button>
+    <mat-icon style="margin-top: -5px;">add</mat-icon>
+  </button>
+</div>
+<mat-divider></mat-divider>
+<br>
+
+<div class="mat-elevation-z2 table-container">
+  <table mat-table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="descripcionPlanilla">
+      <th class="head" mat-header-cell *matHeaderCellDef> Descripción </th>
+      <td mat-cell *matCellDef="let element"> {{element.descripcionPlanilla}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="tipoPlanilla">
+      <th class="head" mat-header-cell *matHeaderCellDef> Tipo de Planilla </th>
+      <td mat-cell *matCellDef="let element"> {{element.tipoPlanilla}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fechaPlanilla">
+      <th class="head" mat-header-cell *matHeaderCellDef> Fecha de Planilla </th>
+      <td mat-cell *matCellDef="let element"> {{element.fechaPlanilla.toDate() | date:'MM/yyyy'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="opciones">
+      <th class="head text-center" mat-header-cell *matHeaderCellDef> Opciones </th>
+      <td class="text-center" mat-cell *matCellDef="let element">
+        <button class="btnopt btn-outline-dark" [routerLink]="['/planillas', element.id]" matTooltip="Ver Registros" mat-icon-button>
+          <mat-icon style="margin-top: -5px;">visibility</mat-icon>
+        </button>
+        <button class="btnopt btn-outline-danger" matTooltip="Eliminar" (click)="deleteP(element.id)" matTooltipPosition="right" mat-icon-button>
+          <mat-icon style="margin-top: -5px;">delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

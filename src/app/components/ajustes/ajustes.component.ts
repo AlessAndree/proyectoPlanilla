@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -12,7 +12,7 @@ import { ObsService } from 'src/app/providers/obs.service';
   templateUrl: './ajustes.component.html',
   styleUrls: ['./ajustes.component.css']
 })
-export class AjustesComponent implements OnInit {
+export class AjustesComponent implements OnInit, OnDestroy {
 
   subUid: Subscription;
   subMessage: Subscription;
@@ -39,6 +39,10 @@ export class AjustesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+  ngOnDestroy() {
+    this.subUid.unsubscribe();
+    this.subMessage.unsubscribe();
   }
 
   deleteP(id: string, tipoAjuste: string) {
