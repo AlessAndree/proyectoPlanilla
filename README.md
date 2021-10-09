@@ -1,4 +1,7 @@
-# Repo PlanillaGT. Proyecto de Graduación de Andreé Espinoza
+# Repositorio PlanillaGT. 
+Proyecto de Graduación de Andreé Espinoza
+
+![](https://1.bp.blogspot.com/-jNyJStq_CD4/V1JSH4pC7WI/AAAAAAAAALs/NSjrogPzqyoZ-Ba_WFFJnQTgOjx-keOIACLcB/s1600/FONDO.jpg)
 
 Este proyecto fue desarrollado con Angular y conectado a una base de datos con Firebase
 
