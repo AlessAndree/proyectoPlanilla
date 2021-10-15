@@ -25,10 +25,10 @@
 
   <mat-tab label="Planilla">
 
+<br>
+    <!-- <div class="mat-elevation-z2 table-container"> -->
 
-    <div class="mat-elevation-z2 table-container">
-
-      <table mat-table [dataSource]="data">
+      <table mat-table class="mat-elevation-z2" [dataSource]="data">
         <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
           <th class="head" mat-header-cell *matHeaderCellDef> {{column}} </th>
           <td class="text-center" mat-cell *matCellDef="let element">
@@ -44,7 +44,9 @@
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
       </table>
-    </div>
+    <!-- </div> -->
+    <br>
+    <button mat-raised-button (click)="descargar()" color="primary">Excel <mat-icon>file_download</mat-icon></button>
 
   </mat-tab>
 

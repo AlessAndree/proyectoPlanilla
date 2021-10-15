@@ -32,6 +32,7 @@ import { PlanillasComponent } from './components/planillas/planillas.component';
 import { DialogPlanillaComponent } from './components/planillas/dialog-planilla/dialog-planilla.component';
 import { PlanillasService } from './providers/planillas.service';
 import { PlanillaComponent } from './components/planillas/planilla/planilla.component';
+import { ExcelService } from './providers/excel.service';
 
 
 @NgModule({
@@ -74,7 +75,7 @@ import { PlanillaComponent } from './components/planillas/planilla/planilla.comp
   ],
   providers: [
     AuthService, AuthGuardService, AngularFirestore, ObsService,
-    EmpleadosService, AjustesService, PlanillasService
+    EmpleadosService, AjustesService, PlanillasService, ExcelService
   ],
   bootstrap: [AppComponent]
 })

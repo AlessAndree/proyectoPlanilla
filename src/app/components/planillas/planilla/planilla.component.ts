@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ExcelService } from 'src/app/providers/excel.service';
 import { ObsService } from 'src/app/providers/obs.service';
 import { PlanillasService } from 'src/app/providers/planillas.service';
 
@@ -39,7 +40,7 @@ export class PlanillaComponent implements OnInit, OnDestroy {
   formCreated = false;
   createdTable = false;
 
-  constructor(private planillasService: PlanillasService, private obsService: ObsService, private rutaActiva: ActivatedRoute, private fb: FormBuilder) {
+  constructor(private planillasService: PlanillasService, private obsService: ObsService, private rutaActiva: ActivatedRoute, private fb: FormBuilder, private excel: ExcelService) {
     const id = this.rutaActiva.snapshot.params.id;
     this.subUid = this.obsService.observableUid$.subscribe(() => {
       this.getPlanilla(id);
@@ -113,6 +114,20 @@ export class PlanillaComponent implements OnInit, OnDestroy {
         this.createTable();
       }
     }
+  }
+
+  descargar() {
+    console.log(
+      this.displayedColumns, this.columnsToDisplay, this.data
+    );
+
+    const info = {
+      titulo: this.planilla.descripcionPlanilla + ' | ' +this.planilla.tipoPlanilla,
+      mes: (this.planilla.fechaPlanilla.toDate().getMonth() + 1),
+      year: this.planilla.fechaPlanilla.toDate().getFullYear()
+    }
+
+    this.excel.createExcel(this.displayedColumns, this.data, info);
   }
 
   createTable() {
@@ -241,16 +256,17 @@ export class PlanillaComponent implements OnInit, OnDestroy {
     if (this.formRegisto) {
       // console.log(this.formRegisto.value);
     }
+    const sDia = Number(this.userActive.puesto.salarioDiario);
     let registro: any = {
       Empleado: this.userActive.nombreCompleto,
       empleadoId: this.userActive.id,
-      'S.Día': this.userActive.puesto.salarioDiario,
+      'S.Día': parseFloat(sDia.toFixed(2)),
       'D.Ordinarios': this.formRegisto.get('diasOrdinarios')?.value,
-      'Ordinario': (this.userActive.puesto.salarioDiario * this.formRegisto.get('diasOrdinarios')?.value).toFixed(2),
+      'Ordinario': parseFloat((this.userActive.puesto.salarioDiario * this.formRegisto.get('diasOrdinarios')?.value).toFixed(2)),
       'D.Séptimos': this.formRegisto.get('diasSeptimos')?.value,
-      'Séptimo': (this.userActive.puesto.salarioDiario * this.formRegisto.get('diasSeptimos')?.value).toFixed(2),
+      'Séptimo': parseFloat((this.userActive.puesto.salarioDiario * this.formRegisto.get('diasSeptimos')?.value).toFixed(2)),
       'D.Vacaciones': this.formRegisto.get('vacaciones')?.value,
-      'Vacaciones': (this.userActive.puesto.salarioDiario * this.formRegisto.get('vacaciones')?.value).toFixed(2),
+      'Vacaciones': parseFloat((this.userActive.puesto.salarioDiario * this.formRegisto.get('vacaciones')?.value).toFixed(2)),
     };
     let salarioTotal = 0;
     if (this.ajustesBonosAfectos.length > 0) {
